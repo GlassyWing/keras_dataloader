@@ -6,11 +6,18 @@ import numpy as np
 from keras_dataloader.dataset import Dataset
 
 
+def default_collate_fn(samples):
+    X = np.array([sample[0] for sample in samples])
+    Y = np.array([sample[1] for sample in samples])
+
+    return X, Y
+
+
 class DataGenerator(keras.utils.Sequence):
 
     def __init__(self,
                  dataset: Dataset,
-                 collate_fn,
+                 collate_fn=default_collate_fn,
                  batch_size=32,
                  shuffle=True,
                  num_workers=0,
